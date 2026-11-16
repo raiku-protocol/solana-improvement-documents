@@ -1,0 +1,37 @@
+name: Sync Fork With Upstream
+
+# Keeps this fork's main branch up to date with
+# solana-foundation/solana-improvement-documents. This file is the only
+# fork-specific file in the repository.
+#
+# The default token cannot push a sync that changes files under
+# .github/workflows/. When upstream changes one, the run fails: either use
+# "Sync fork" on the repository page once, or add a repository secret named
+# SYNC_TOKEN holding a token with "contents" and "workflows" write access.
+
+on:
+  schedule:
+    # Run every Monday and Thursday at 05:23 UTC
+    - cron: '23 5 * * 1,4'
+  workflow_dispatch: # Allow manual trigger
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-upstream
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    # Never run in the upstream repository itself
+    if: github.repository != 'solana-foundation/solana-improvement-documents'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Merge upstream main into main
+        env:
+          GH_TOKEN: ${{ secrets.SYNC_TOKEN || github.token }}
+        run: |
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/merge-upstream" \
+            -f branch=main \
+            --jq '"\(.message) (merge type: \(.merge_type // "none"))"'
