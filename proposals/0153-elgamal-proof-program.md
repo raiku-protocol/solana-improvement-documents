@@ -5,13 +5,11 @@ authors:
   - Sam Kim
 category: Standard
 type: Core
-status: Draft
-created: 2024-06-13T00:00:00.000Z
-feature: null
-supersedes: null
-superseded-by: null
-extends: null
+status: Activated
+created: 2024-06-13
+feature: zkhiy5oLowR7HY4zogXjCjeMXyruLqBwSWH21qcFtnv
 ---
+
 ## Summary
 
 Deprecate the existing ZK Token Proof program that is tailored for the SPL

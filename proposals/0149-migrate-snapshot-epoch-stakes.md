@@ -4,9 +4,9 @@ title: Migrate Snapshot Serialized Epoch Stakes
 authors: Justin Starry (Anza)
 category: Standard
 type: Core
-status: Draft
+status: Activated
 created: 2024-05-09
-feature: (fill in with feature tracking issues once accepted)
+feature: N/A
 ---
 
 ## Summary

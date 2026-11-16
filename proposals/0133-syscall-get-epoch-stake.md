@@ -5,9 +5,12 @@ authors:
   - Joe Caulfield (Anza)
 category: Standard
 type: Core
-status: Draft
+status: Activated
 created: 2024-03-25
-feature: (fill in with feature tracking issues once accepted)
+feature: FKe75t4LXxGaQnVHdUKM6DSFifVVraGZ8LyNo7oPwy1Z (https://github.com/anza-xyz/agave/issues/884)
+development:
+  - Anza - Implemented (https://github.com/solana-foundation/solana-improvement-documents/pull/133)
+  - Firedancer - Implemented
 ---
 
 ## Summary
@@ -25,8 +28,8 @@ many use cases, such as validator governance and secondary consensus mechanisms,
 that were previously not possible on Solana.
 
 Additionally, this would enable the Feature Gate program defined in
-[SIMD 0089](./0089-programify-feature-gate.md) to tally vote account stake in
-support for a pending feature gate.
+[SIMD 0089](./0089-programify-feature-gate-program.md) 
+to tally vote account stake in support for a pending feature gate.
 
 ## Alternatives Considered
 

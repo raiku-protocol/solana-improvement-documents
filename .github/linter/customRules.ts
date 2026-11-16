@@ -7,9 +7,9 @@ export const enforceHeaderStructure = {
   tags: ["structure"],
   function: function rule(params: RuleParams, onError: RuleOnError) {
     const string = params.frontMatterLines
-    .join("\n")
-    .trim()
-    .replace(/^-*$/gm, "")
+      .join("\n")
+      .trim()
+      .replace(/^-*$/gm, "")
 
     const frontMatter: any = yaml.load(string)
     if (!frontMatter) return
@@ -30,7 +30,7 @@ export const enforceHeaderStructure = {
 
     let tempHeadings = expectedHeadings;
 
-    while (index < expectedHeadings.length) {
+    while (index < filtered.length) {
       let token = filtered[index]
       tempHeadings = tempHeadings.filter(item => item !== token.line)
 
@@ -124,6 +124,7 @@ const optionalMetadata = [
   "supersedes",
   "superseded-by",
   "extends",
+  "development",
 ]
 
 export const metadataSimdIsValid = {
@@ -225,7 +226,7 @@ export const metadataCategoryIsValid = {
     const category: string = frontMatter.category
     if (!category) return
 
-    if (!["Meta", "Standard"].includes(category)) {
+    if (!["Meta", "Standard", "Advisory"].includes(category)) {
       onError({
         lineNumber: 1,
         detail: `\`${category}\` is not supported as a value for category`,
@@ -250,7 +251,7 @@ export const metadataTypeIsValid = {
     const type: string = frontMatter.type
     if (!type) return
 
-    const validTypes = ["Core", "Networking", "Interface", "Meta"]
+    const validTypes = ["Core", "Networking", "Interface", "Meta", "Advisory"]
 
     if (!validTypes.some((validType) => type.includes(validType))) {
       onError({
@@ -281,13 +282,14 @@ export const metadataStatusIsValid = {
 
     const validStatus = [
       "Idea",
-      "Draft", 
+      "Draft",
       "Review",
       "Accepted",
       "Stagnant",
       "Withdrawn",
       "Implemented",
       "Activated",
+      "Living"
     ]
 
     if (!validStatus.includes(status)) {

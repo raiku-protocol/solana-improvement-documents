@@ -5,9 +5,9 @@ authors:
   - Hanako Mumei
 category: Standard
 type: Core
-status: Draft
+status: Activated
 created: 2024-04-30
-feature: (fill in with feature tracking issues once accepted)
+feature: 7bTK6Jis8Xpfrs8ZoUfiMDPazTcdPcTWheZFJTA5Z6X4 (https://github.com/anza-xyz/agave/issues/1610)
 ---
 
 ## Summary

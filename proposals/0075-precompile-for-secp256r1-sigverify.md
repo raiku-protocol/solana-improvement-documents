@@ -7,9 +7,9 @@ authors:
   - Dean (Web3 Builders Alliance)
 category: Standard
 type: Core
-status: Draft
+status: Activated
 created: 2024-02-27
-feature: (fill in with feature tracking issues once accepted)
+feature: srremy31J5Y25FrAApwVb9kZcfXbusYMMsvTK9aWv5q (https://github.com/anza-xyz/agave/issues/3656)
 supersedes: "0048"
 ---
 

@@ -5,9 +5,12 @@ authors:
   - Joe Caulfield (Anza)
 category: Standard
 type: Core
-status: Draft
+status: Activated
 created: 2024-03-15
-feature: (fill in with feature tracking issues once accepted)
+feature: CLCoTADvV64PSrnR6QXty6Fwrt9Xc6EdxSJE4wLRePjq
+development:
+  - Anza - Not Started
+  - Firedancer - Not started
 ---
 
 ## Summary
@@ -71,7 +74,7 @@ will forever have the same size.
 This prevents future upgrades that shrink or extend sysvars. In the same
 spirit, if a new sysvar is created, a new syscall must be created.
 
-Furthermore, if certain queries are requred by BPF programs - such as
+Furthermore, if certain queries are required by BPF programs - such as
 `SlotHashes::get_slot()` and `StakeHistory::get_entry()` - those single-element
 retrievals will _also_ require new syscalls.
 
@@ -80,7 +83,7 @@ It's worth noting that at the time of this writing, the work required for
 syscalls if the existing design is not ratified.
 
 This tightly-coupled relationship between sysvars and syscalls will perpetually
-swell the syscall interface as changes are made, making maintainence and
+swell the syscall interface as changes are made, making maintenance and
 reimplementation difficult.
 
 ## Alternatives Considered
