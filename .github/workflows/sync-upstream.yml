@@ -4,10 +4,18 @@ name: Sync Fork With Upstream
 # solana-foundation/solana-improvement-documents. This file is the only
 # fork-specific file in the repository.
 #
-# The default token cannot push a sync that changes files under
-# .github/workflows/. When upstream changes one, the run fails: either use
-# "Sync fork" on the repository page once, or add a repository secret named
-# SYNC_TOKEN holding a token with "contents" and "workflows" write access.
+# Three things stop it. For the first two the failed run's summary says what
+# to do:
+#
+# 1. The default token cannot push a sync that changes files under
+#    .github/workflows/. Use "Sync fork" on the repository page once, or add a
+#    repository secret named SYNC_TOKEN: a fine-grained token for this
+#    repository with Contents and Workflows set to read and write (or a classic
+#    token with the repo and workflow scopes).
+# 2. A merge conflict, if this fork ever changes a file upstream also changes.
+#    It has to be resolved by hand; a token does not help.
+# 3. GitHub pauses scheduled workflows in a public repository after 60 days
+#    without repository activity. Re-enable this one from the Actions tab.
 
 on:
   schedule:
@@ -32,6 +40,30 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.SYNC_TOKEN || github.token }}
         run: |
-          gh api --method POST "repos/${GITHUB_REPOSITORY}/merge-upstream" \
-            -f branch=main \
-            --jq '"\(.message) (merge type: \(.merge_type // "none"))"'
+          if out=$(gh api --method POST "repos/${GITHUB_REPOSITORY}/merge-upstream" -f branch=main 2>&1); then
+            line=$(jq -r '"\(.message) (merge type: \(.merge_type // "none"))"' <<<"$out" 2>/dev/null || echo "$out")
+            echo "$line"
+            echo "$line" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "$out"
+            {
+              echo "### Sync with upstream failed"
+              echo
+              echo '```'
+              echo "$out"
+              echo '```'
+              echo
+              if grep -q 'HTTP 409' <<<"$out"; then
+                echo "Cause: a merge conflict. Upstream and this fork changed the same lines, so GitHub cannot merge them by itself. A token does not help."
+                echo
+                echo "To fix: open the repository page, use **Sync fork** and open the pull request it offers to resolve the conflict, or merge upstream's \`main\` into \`main\` locally and push."
+              else
+                echo "Likely cause: upstream changed a file under \`.github/workflows/\`, which the default token may not push."
+                echo
+                echo "To fix now: open the repository page and use **Sync fork**."
+                echo
+                echo "To stop it recurring: add a repository secret \`SYNC_TOKEN\`, a fine-grained token for this repository with Contents and Workflows set to read and write."
+              fi
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
